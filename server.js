@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
-import { routes } from "./Routes/user.routes.mjs";
+import { userroutes } from "./Routes/user.routes.mjs";
+import { cartroutes } from "./Routes/cart.routes.mjs";
+import { productroutes } from "./Routes/product.routes.mjs";
 import { requestLogger } from "./Middleware/logger.js";
 import { errorHandler } from "./Middleware/errorHandler.js";
 
@@ -10,7 +12,9 @@ app.use(express.json());
 app.use(requestLogger);
 
 // Apply routes
-routes(app);
+userroutes(app);
+productroutes(app);
+cartroutes(app);
 
 
 app.use(errorHandler);  //(Error handler should be placed after routes)

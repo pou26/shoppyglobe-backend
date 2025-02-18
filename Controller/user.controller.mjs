@@ -9,7 +9,7 @@ export async function createUser(req, res, next) {
     try {
         const { firstName, lastName, hobby, password } = req.body;
 
-                // 🔍 Check if request body is empty
+                // Check if request body is empty
         if (!isValidRequestBody(req.body)) {
                 return res.status(400).json({ status: false, message: "Request body cannot be empty." });
         }
@@ -26,7 +26,7 @@ export async function createUser(req, res, next) {
             return res.status(400).json({ status: false, message: "Last name must contain only letters and spaces." });
         }
 
-                // 🔍 Validate password format
+                // Validate password format
                 if (!isValidPassword(password)) {
                     return res.status(400).json({
                         status: false,

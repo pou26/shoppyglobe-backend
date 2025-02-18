@@ -2,7 +2,7 @@ import Cart from "../Model/cart.model.mjs";
 import Product from "../Model/product.model.mjs";
 import {isValidObjectId} from "../Middleware/validate.mjs"; 
 
-// ✅ Create or Update Cart Function
+// Create or Update Cart Function
 export async function createCart(req, res, next) {
     try {
         const { userId } = req.params; // Get user ID from params
@@ -12,7 +12,7 @@ export async function createCart(req, res, next) {
             return res.status(400).json({ msg: "Invalid product ID" });
         }
 
-        // 🔍 Check if product exists
+        // Check if product exists
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ status: false, message: "No product found" });
@@ -30,7 +30,7 @@ export async function createCart(req, res, next) {
         }
 
         if (cart) {
-            // 🔍 Check if product already exists in the cart
+            // Check if product already exists in the cart
             const existingItem = cart.items.find(item => item.productId.toString() === productId);
 
             if (existingItem) {
@@ -71,19 +71,19 @@ export async function updateCart(req, res, next) {
             return res.status(400).json({ msg: "Invalid cart ID" });
         }
 
-        // 🔍 Check if cart exists
+        // Check if cart exists
         const cart = await Cart.findById(cartid);
         if (!cart) {
             return res.status(404).json({ status: false, message: "Cart not found" });
         }
 
-        // 🔍 Check if the product exists
+        // Check if the product exists
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ status: false, message: "Product not found" });
         }
 
-        // 🔍 Check if the product is already in the cart
+        // Check if the product is already in the cart
         const cartItem = cart.items.find(item => item.productId.toString() === productId);
         if (!cartItem) {
             return res.status(404).json({ status: false, message: "Product not found in cart" });
@@ -91,7 +91,7 @@ export async function updateCart(req, res, next) {
 
         let updatedCart;
         if (quantity > 0) {
-            // ✅ Update quantity of an existing product
+            // Update quantity of an existing product
             updatedCart = await Cart.findOneAndUpdate(
                 { _id: cartid, "items.productId": productId },
                 {
@@ -101,7 +101,7 @@ export async function updateCart(req, res, next) {
                 { new: true }
             );
         } else {
-            // ✅ Remove product from cart if quantity is 0
+            // Remove product from cart if quantity is 0
             updatedCart = await Cart.findOneAndUpdate(
                 { _id: cartid },
                 {
@@ -112,7 +112,7 @@ export async function updateCart(req, res, next) {
             );
         }
 
-        // 🔄 Update totalItems count
+        // Update totalItems count
         updatedCart.totalItems = updatedCart.items.length;
         await updatedCart.save();
 
@@ -128,40 +128,40 @@ export async function deleteCart(req, res, next) {
         const { cartid } = req.params;
         const { productId, quantityToRemove } = req.body; // Quantity to remove from the cart
 
-        // 🔍 Validate cart ID
+        // Validate cart ID
         if (!isValidObjectId(cartid)) {
             return res.status(400).json({ status: false, message: "Invalid cart ID" });
         }
 
-        // 🔍 Validate product ID
+        // Validate product ID
         if (!isValidObjectId(productId)) {
             return res.status(400).json({ status: false, message: "Invalid product ID" });
         }
 
-        // 🔍 Validate quantityToRemove (ensure it's a valid number)
+        // Validate quantityToRemove (ensure it's a valid number)
         if (isNaN(quantityToRemove) || quantityToRemove <= 0) {
             return res.status(400).json({ status: false, message: "Invalid quantity to remove. It should be a positive number." });
         }
 
-        // 🔍 Check if cart exists
+        // Check if cart exists
         const cart = await Cart.findById(cartid);
         if (!cart) {
             return res.status(404).json({ status: false, message: "Cart not found" });
         }
 
-        // 🔍 Check if the product exists in the cart
+        // Check if the product exists in the cart
         const cartItem = cart.items.find(item => item.productId.toString() === productId);
         if (!cartItem) {
             return res.status(404).json({ status: false, message: "Product not found in cart" });
         }
 
-        // 🔍 Fetch product price from the database
+        // Fetch product price from the database
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ status: false, message: "Product not found in database" });
         }
 
-        // 🔍 Check if quantity to remove is greater than or equal to cart quantity
+        // Check if quantity to remove is greater than or equal to cart quantity
         if (cartItem.quantity <= quantityToRemove) {
             // If quantity to remove is equal to or greater than quantity in cart, remove product completely
             const updatedCart = await Cart.findByIdAndUpdate(
