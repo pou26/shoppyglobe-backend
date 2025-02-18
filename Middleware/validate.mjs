@@ -5,6 +5,11 @@ export function isValidName(value) {
     return typeof value === "string" && value.trim().length > 0 && /^[a-zA-Z\s]+$/.test(value);
 }
 
+// Function to check if a value is a valid non-empty string
+export function isValid(value) {
+    return typeof value === "string" && value.trim().length > 0;
+}
+
 // Function to validate passwords (8-15 characters, 1 uppercase, 1 lowercase, 1 number, 1 special character)
 export function isValidPassword(value) {
     return typeof value === "string" &&

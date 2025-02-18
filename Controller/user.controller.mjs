@@ -1,7 +1,7 @@
 import userModel from "../Model/user.model.mjs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"; 
-import {isValidPassword,isValidName} from "../Middleware/validate.mjs"; 
+import {isValidPassword,isValidName,isValid,isValidRequestBody} from "../Middleware/validate.mjs"; 
 
 
 // ✅ Create a User

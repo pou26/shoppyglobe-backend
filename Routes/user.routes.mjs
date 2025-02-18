@@ -13,8 +13,8 @@ export function routes(app) {
 
     // Products
 
-    app.get("/products/:userId", authenticatedUser,authorization, getProduct);
-    app.get("/products/:productId/:userId", getProductById);
+    app.get("/products",getProduct);
+    app.get("/products/:productId", getProductById);
 
     //cart
 
